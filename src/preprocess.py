@@ -36,10 +36,12 @@ def split_data(df):
     selected_features = ['c_1', 'c_6', 'lcs_word']
     return train_test_data(complete_df, features_df, selected_features)
 
-def save_csv(data):
-    (train_x, train_y), (test_x, test_y) = data
-    make_csv(train_x, train_y, filename='train.csv', data_dir='../models')
-    make_csv(test_x, test_y, filename='test.csv', data_dir='../models')
+def save_csv(save_dir):
+    def inner(data):
+        (train_x, train_y), (test_x, test_y) = data
+        make_csv(train_x, train_y, filename='train.csv', data_dir=save_dir)
+        make_csv(test_x, test_y, filename='test.csv', data_dir=save_dir)
+    return inner
 
 program = pipe([
         make_class,
@@ -50,13 +52,16 @@ program = pipe([
         split_data,
         ])
 
-main = pipe([
+def main(data_dir, save_dir): 
+    return pipe([
         load_df,
         program,
-        save_csv
-        ])
+        save_csv(save_dir)
+        ])(data_dir)
 
 
 if __name__ == '__main__':
-    main('../input/data/test_info.csv')
+    data_dir = os.environ.get('DATA_DIR')
+    save_dir = os.environ.get('SAVE_DIR')
+    main(data_dir, save_dir)
         

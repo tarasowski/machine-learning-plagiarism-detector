@@ -85,7 +85,7 @@ def process_file(file):
     return all_text
 
 
-def create_text_column(df, file_directory='../input/data/'):
+def create_text_column(df, file_directory='./input/data/'):
     '''Reads in the files, listed in a df and returns that df with an additional column, `Text`. 
        :param df: A dataframe of file information including a column for `File`
        :param file_directory: the main directory where files are stored

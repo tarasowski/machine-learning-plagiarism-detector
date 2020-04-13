@@ -1,0 +1,51 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::Serverless-2016-10-31
+Description: Main template for bootstrapping the endpoint and API 
+
+Parameters:
+  ModelName:
+    Description: The name of the model
+    Type: String
+  ModelDataUrl:
+    Description: The location of model artifacts after the training
+    Type: String
+  TrainingImage:
+    Description: The container that was used to train the model
+    Type: String
+  InstanceType:
+    Description: Instance type for the endpoint
+    Type: String
+    Default: ml.m4.xlarge
+  InstanceCount:
+    Description: Number of instances
+    Type: String
+    Default: 1
+  RoleArn:
+    Description: Execution role 
+    Type: String
+  InferenceCode:
+    Description: The location of the inference code
+    Type: String
+
+Resources:
+  Sagemaker:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location: ./sagemaker.template.yaml
+      Parameters:
+        ModelName:
+          Ref: ModelName
+        ModelDataUrl:
+          Ref: ModelDataUrl
+        TrainingImage:
+          Ref: TrainingImage
+        InstanceType:
+          Ref: InstanceType
+        InstanceCount:
+          Ref: InstanceCount
+        RoleArn:
+          Ref: RoleArn
+        InferenceCode:
+          Ref: InferenceCode
+
+

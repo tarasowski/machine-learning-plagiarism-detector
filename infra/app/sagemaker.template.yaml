@@ -1,0 +1,64 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Parameters:
+  ModelName:
+    Description: The name of the model
+    Type: String
+  ModelDataUrl:
+    Description: The location of model artifacts after the training
+    Type: String
+  TrainingImage:
+    Description: The container that was used to train the model
+    Type: String
+  InstanceType:
+    Description: Instance type for the endpoint
+    Type: String
+    Default: ml.m4.xlarge
+  InstanceCount:
+    Description: Number of instances
+    Type: String
+    Default: 1
+  RoleArn:
+    Description: Execution role 
+    Type: String
+  InferenceCode:
+    Description: The location of the inference code
+    Type: String
+
+Resources:
+  Model:
+    Type: AWS::SageMaker::Model
+    Properties:
+      PrimaryContainer:
+        Image: !Ref TrainingImage
+        ModelDataUrl: !Ref ModelDataUrl
+        Environment:  {"SAGEMAKER_PROGRAM": "predict.py","SAGEMAKER_ENABLE_CLOUDWATCH_METRICS": false,"SAGEMAKER_REGION": {"Ref": "AWS::Region"},"SAGEMAKER_CONTAINER_LOG_LEVEL": "20","SAGEMAKER_SUBMIT_DIRECTORY": {"Ref": "InferenceCode"}}
+      ExecutionRoleArn: !Ref RoleArn
+      ModelName: !Ref ModelName
+  Endpoint:
+    Type: AWS::SageMaker::Endpoint
+    Properties:
+      EndpointConfigName: !GetAtt EndpointConfig.EndpointConfigName
+
+  EndpointConfig:
+    Type: AWS::SageMaker::EndpointConfig
+    Properties:
+      ProductionVariants:
+        - ModelName: !GetAtt Model.ModelName
+          VariantName: variant-1
+          InitialInstanceCount: !Ref InstanceCount
+          InitialVariantWeight: 1.0
+          InstanceType: !Ref InstanceType
+
+  EndpointName:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: !Sub '/applications/cs-sagemaker/endpoints/name'
+      Type: String
+      Value: !GetAtt Endpoint.EndpointName
+        
+Outputs:
+  EndpointId:
+    Value: !Ref Endpoint
+  EndpointName:
+    Value: !GetAtt Endpoint.EndpointName
