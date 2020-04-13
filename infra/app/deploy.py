@@ -2,7 +2,7 @@ import boto3
 import os
 import json
 
-TRAINING_JOB_NAME = os.environ.get('TRAINING_JOB_NAME') or 'sagemaker-scikit-learn-2020-04-13-11-36-57-229'
+TRAINING_JOB_NAME = os.environ.get('TRAINING_JOB_NAME') 
 STACK_NAME = os.environ.get('STACK_NAME')
 
 dir_path = os.path.dirname(os.path.realpath(__file__))

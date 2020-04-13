@@ -8,7 +8,7 @@ import json
 
 client = boto3.client('sagemaker-runtime')
 
-ENDPOINT_NAME = 'Endpoint-vmO2vs9iZLvI'
+ENDPOINT_NAME = os.environ.get('ENDPOINT_NAME') 
 CONTENT_TYPE = 'application/python-pickle'
 
 test_data = pd.read_csv('./models/test.csv', header=None, names=None)

@@ -24,9 +24,13 @@ ifdef STACK_NAME
 	@aws cloudformation package --template-file ./infra/app/main.template.yaml --output-template-file ./infra/app/output.yaml --s3-bucket $(CFN_ARTIFACTS_BUCKET) --region eu-central-1
 	TRAINING_JOB_NAME=$(JOB_NAME) STACK_NAME=$(STACK_NAME) python3 ./infra/app/deploy.py
 else
-	$(error "Please provide following arguments: job_name=string, stack_name=string")
+	$(error "Please provide following arguments: TRAINING_JOB_NAME=String, STACK_NAME=String")
 endif
 endif
 
 predict:
-	python3 ./get_predictions.py
+ifdef ENDPOINT_NAME
+	ENDPOINT_NAME=$(ENDPOINT_NAME) python3 ./get_predictions.py
+else
+	$(error "Please provide following argument: ENDPOINT_NAME=String")
+endif
