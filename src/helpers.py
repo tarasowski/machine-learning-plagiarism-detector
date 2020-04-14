@@ -1,3 +1,6 @@
+# The code for this helpers file was provided by Udacity.com
+# https://github.com/udacity/ML_SageMaker_Studies
+
 import re
 import pandas as pd
 import operator 

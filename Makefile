@@ -28,7 +28,7 @@ else
 endif
 endif
 
-predict:
+prediction:
 ifdef ENDPOINT_NAME
 	ENDPOINT_NAME=$(ENDPOINT_NAME) python3 ./get_predictions.py
 else

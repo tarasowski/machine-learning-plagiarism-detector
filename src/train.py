@@ -1,13 +1,9 @@
 from __future__ import print_function
-
 import argparse
 import os
 import pandas as pd
-
 from sklearn.externals import joblib
 from sklearn.ensemble import RandomForestClassifier
-
-## TODO: Import any additional libraries you need to define a model
 
 
 # Provided model load function
@@ -24,7 +20,6 @@ def model_fn(model_dir):
     return model
 
 
-## TODO: Complete the main code
 if __name__ == '__main__':
     
     # All of the model parameters and training parameters are sent as arguments
@@ -34,14 +29,12 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
     # SageMaker parameters, like the directories for training data and saving models; set automatically
-    # Do not need to change
     parser.add_argument('--output-data-dir', type=str, default=os.environ['SM_OUTPUT_DATA_DIR'])
     parser.add_argument('--model-dir', type=str, default=os.environ['SM_MODEL_DIR'])
     parser.add_argument('--data-dir', type=str, default=os.environ['SM_CHANNEL_TRAIN'])
     parser.add_argument('--max_depth', type=int, default=5)
     parser.add_argument('--n_estimators', type=int, default=10)
     
-    ## TODO: Add any additional arguments that you will need to pass into your model
     
     # args holds all passed-in arguments
     args = parser.parse_args()
@@ -54,20 +47,13 @@ if __name__ == '__main__':
     train_x = train_data.iloc[:,1:]
     
     
-    ## --- Your code here --- ##
-    
-
-    ## TODO: Define a model 
     max_depth = args.max_depth
     n_estimators = args.n_estimators
     
     model = RandomForestClassifier(max_depth=max_depth, n_estimators=n_estimators)
-    
-    ## TODO: Train the model
+   
+    # Training the model
     model.fit(train_x, train_y)    
-    
-    
-    ## --- End of your code  --- ##
     
 
     # Save the trained model

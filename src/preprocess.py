@@ -43,6 +43,7 @@ def save_csv(save_dir):
         make_csv(test_x, test_y, filename='test.csv', data_dir=save_dir)
     return inner
 
+# Pure functional part
 program = pipe([
         make_class,
         make_category,
@@ -52,6 +53,7 @@ program = pipe([
         split_data,
         ])
 
+# Dirty IO part
 def main(data_dir, save_dir): 
     return pipe([
         load_df,

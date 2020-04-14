@@ -14,9 +14,7 @@ def input_fn(request_body, request_content_type):
         array = np.load(BytesIO(request_body), allow_pickle=True)
         return array
     else:
-        # Handle other content-types here or raise an Exception
-        # if the content type is not supported.
-        pass
+        raise Exception("Please provide 'application/python-pickle' as a request content type")
 
 def predict_fn(input_data, model):
     prediction = model.predict(input_data)
