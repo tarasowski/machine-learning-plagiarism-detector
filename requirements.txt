@@ -28,7 +28,7 @@ nltk==3.4.5
 numpy==1.18.1
 packaging==20.1
 pandas==1.0.1
-paramiko==2.7.1
+paramiko==2.10.1
 prompt-toolkit==3.0.5
 protobuf==3.11.3
 protobuf3-to-dict==0.1.5
